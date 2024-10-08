@@ -1,3 +1,5 @@
+# TODO: Add support for Windows
+
 CC = g++
 CFLAGS = -std=c++20 -g -Wall -I./include -O3
 LDFLAGS = -L./lib -lraylib
