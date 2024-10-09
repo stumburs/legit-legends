@@ -1,5 +1,6 @@
 #pragma once
 #include <PlayerController.hpp>
+#include "Gate.hpp"
 
 class World
 {
@@ -11,4 +12,6 @@ public:
 
 private:
     PlayerController player_controller;
+    std::vector<Gate> gates;
+    float gate_interval; // units (X)
 };

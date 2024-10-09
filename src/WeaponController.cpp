@@ -14,7 +14,7 @@ void WeaponController::update(Vector3 player_pos)
         this->projectile_frametime_counter = 0.0f;
 
         // Fire
-        projectiles.emplace_back(player_pos, 5.0f);
+        projectiles.emplace_back(player_pos, 10.0f);
     }
 
     // Update shots
