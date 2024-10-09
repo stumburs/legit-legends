@@ -1,18 +1,29 @@
-# TODO: Add support for Windows
-
 CC = g++
 CFLAGS = -std=c++20 -g -Wall -I./include -O3
 LDFLAGS = -L./lib -lraylib
 SRCS = $(wildcard src/*.cpp)
-OUT_NAME = legit-legends
+
+ifeq ($(OS), Windows_NT)
+    DETECTED_OS := Windows
+	TARGET := legit-legends.exe
+else
+    DETECTED_OS := $(shell uname)
+	TARGET := legit-legends
+endif
 
 build: $(SRCS)
-	$(CC) $(SRCS) $(CFLAGS) $(LDFLAGS) -o $(OUT_NAME)
+	$(info Building for: $(DETECTED_OS))
+	$(CC) $(SRCS) $(CFLAGS) $(LDFLAGS) -o $(TARGET)
 
 run: build
-	./$(OUT_NAME)
-
-.PHONY: build clean run
+	./$(TARGET)
 
 clean:
-	rm -rf $(OUT_NAME)
+ifeq ($(DETECTED_OS), Windows_NT)
+	del $(TARGET)
+endif
+ifeq ($(DETECTED_OS), Linux)
+	rm -rf $(TARGET)
+endif
+
+.PHONY: build clean run
