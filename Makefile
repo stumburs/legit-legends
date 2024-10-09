@@ -4,10 +4,10 @@ LDFLAGS = -L./lib -lraylib
 SRCS = $(wildcard src/*.cpp)
 
 ifeq ($(OS), Windows_NT)
-    DETECTED_OS := Windows
+	DETECTED_OS := Windows
 	TARGET := legit-legends.exe
 else
-    DETECTED_OS := $(shell uname)
+	DETECTED_OS := $(shell uname)
 	TARGET := legit-legends
 endif
 
