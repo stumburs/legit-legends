@@ -2,7 +2,7 @@
 #include "raymath.h"
 #include <iostream>
 
-PlayerController::PlayerController()
+PlayerController::PlayerController() : weapon_controller(WeaponController(1.0f))
 {
     // Camera
     this->camera.fovy = 90.0f;
@@ -18,11 +18,6 @@ PlayerController::PlayerController()
     this->texture = LoadTexture("./assets/knight.png");
     this->speed = 2.0f;
 
-    // Weapons
-    this->bullet_interval = 1.0f; // seconds
-    this->bullet_frametime_counter = 0.0f;
-    this->bullet_speed = 5.0f;
-
     std::cout << "INIT!\n";
 }
 
@@ -34,10 +29,7 @@ const Camera &PlayerController::get_camera() const
 void PlayerController::render()
 {
     // Render bullets
-    for (const auto bullet : bullets)
-    {
-        DrawCubeV(bullet, {0.2f, 0.2f, 0.2f}, YELLOW);
-    }
+    weapon_controller.render();
 
     DrawBillboard(this->camera, this->texture, player_pos, 2.0f, WHITE);
     DrawCubeWires(player_pos, 0.0f, 2.0f, 1.0f, RED);
@@ -63,22 +55,5 @@ void PlayerController::update()
     camera.target.x = camera.position.x + 10.0f;
 
     // Fire shots
-    bullet_frametime_counter += GetFrameTime();
-    if (bullet_frametime_counter >= bullet_interval)
-    {
-        bullet_frametime_counter = 0.0f;
-
-        // Fire
-        bullets.push_back(player_pos);
-    }
-
-    // Update shots
-    for (auto it = bullets.begin(); it != bullets.end(); it++)
-    {
-        it->x += bullet_speed * GetFrameTime();
-        if (it->x - player_pos.x > 20)
-        {
-            it = bullets.erase(it);
-        }
-    }
+    weapon_controller.update(player_pos);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include <vector>
+#include "WeaponController.hpp"
 
 class PlayerController
 {
@@ -17,8 +18,5 @@ private:
     float speed;
     float distance_to_camera;
 
-    std::vector<Vector3> bullets;
-    float bullet_interval; // seconds
-    float bullet_frametime_counter;
-    float bullet_speed;
+    WeaponController weapon_controller;
 };
