@@ -1,6 +1,6 @@
 #include "Game.hpp"
 #include "raylib.h"
-#include "PlayerController.hpp"
+#include "World.hpp"
 
 void Game::run()
 {
@@ -8,13 +8,13 @@ void Game::run()
     InitWindow(1920, 1080, "Legit Legends");
     SetTargetFPS(144);
 
-    PlayerController pc;
+    World world;
 
     while (!WindowShouldClose())
     {
         // Update
         {
-            pc.update();
+            world.update();
         }
 
         // Render
@@ -22,13 +22,9 @@ void Game::run()
         {
             ClearBackground(RAYWHITE);
             // 3D
-            BeginMode3D(pc.get_camera());
+            BeginMode3D(world.get_player().get_camera());
             {
-                DrawGrid(100, 1.0f);
-                DrawCube({0.0f, 0.5f, -5.0f}, 100.0f, 1.0f, 0.0f, GRAY);
-                DrawCube({0.0f, 0.5f, 5.0f}, 100.0f, 1.0f, 0.0f, GRAY);
-                DrawPlane({0.0f, 0.0f, 0.0f}, {100.0f, 10.0f}, DARKBROWN);
-                pc.render();
+                world.render();
             }
             EndMode3D();
             DrawFPS(20, 20);

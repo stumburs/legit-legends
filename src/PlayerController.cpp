@@ -1,5 +1,6 @@
 #include "PlayerController.hpp"
 #include "raymath.h"
+#include <iostream>
 
 PlayerController::PlayerController()
 {
@@ -21,6 +22,8 @@ PlayerController::PlayerController()
     this->bullet_interval = 1.0f; // seconds
     this->bullet_frametime_counter = 0.0f;
     this->bullet_speed = 5.0f;
+
+    std::cout << "INIT!\n";
 }
 
 const Camera &PlayerController::get_camera() const
