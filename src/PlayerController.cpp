@@ -26,6 +26,11 @@ const Camera &PlayerController::get_camera() const
     return this->camera;
 }
 
+const Vector3 PlayerController::get_position() const
+{
+    return this->player_pos;
+}
+
 void PlayerController::render()
 {
     // Render bullets

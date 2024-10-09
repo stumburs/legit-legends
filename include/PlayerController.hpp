@@ -8,6 +8,7 @@ class PlayerController
 public:
     PlayerController();
     const Camera &get_camera() const;
+    const Vector3 get_position() const;
     void render();
     void update();
 
