@@ -17,8 +17,6 @@ PlayerController::PlayerController() : weapon_controller(WeaponController(1.0f))
     this->player_pos = {4.0f, 1.0f, 0.0f};
     this->texture = LoadTexture("./assets/knight.png");
     this->speed = 5.0f;
-
-    std::cout << "INIT!\n";
 }
 
 const Camera &PlayerController::get_camera() const

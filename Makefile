@@ -26,7 +26,7 @@ endif
 
 # Add additional linking flags for Windows
 ifeq ($(DETECTED_OS), Windows)
-    LDFLAGS += -lwinmm -lgdi32
+	LDFLAGS += -lwinmm -lgdi32
 endif
 
 # Default rule
