@@ -1,8 +1,9 @@
 #include "World.hpp"
+#include <iostream>
 
 World::World()
 {
-    this->gate_interval = 20.0f;
+    this->gate_interval = 40.0f;
 }
 
 void World::update()
@@ -35,6 +36,19 @@ void World::update()
             ++it;
         }
     }
+
+    while (gates.back().get_pos().x - player_controller.get_position().x < 100)
+    {
+        Vector3 new_gate_pos = gates.back().get_pos();
+        new_gate_pos.x += gate_interval;
+        new_gate_pos.z = -2.5f;
+        gates.emplace_back(new_gate_pos, Color{0, 255, 0, 60});
+
+        new_gate_pos.z = 2.5f;
+        gates.emplace_back(new_gate_pos, Color{255, 0, 0, 60});
+    }
+
+    std::cout << gates.size() << std::endl;
 }
 
 void World::render()
