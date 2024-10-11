@@ -3,22 +3,23 @@
 
 World::World()
 {
-    this->gate_interval = 40.0f;
+    this->gate_interval = 20.0f;
 }
 
 void World::update()
 {
     player_controller.update();
 
+    // Initialize first gates
     if (gates.empty())
     {
         Vector3 gate_pos = player_controller.get_position();
         gate_pos.x += gate_interval;
         gate_pos.z = -2.5f;
-        gates.emplace_back(gate_pos, Color{0, 255, 0, 60});
+        gates.emplace_back(gate_pos, Color{0, 255, 0, 60}, GateType::ADD, 69);
 
         gate_pos.z = 2.5f;
-        gates.emplace_back(gate_pos, Color{255, 0, 0, 60});
+        gates.emplace_back(gate_pos, Color{255, 0, 0, 60}, GateType::SUBTRACT, 420);
     }
 
     // Update gates
@@ -42,13 +43,11 @@ void World::update()
         Vector3 new_gate_pos = gates.back().get_pos();
         new_gate_pos.x += gate_interval;
         new_gate_pos.z = -2.5f;
-        gates.emplace_back(new_gate_pos, Color{0, 255, 0, 60});
+        gates.emplace_back(new_gate_pos, Color{0, 255, 0, 60}, GateType::ADD, 69);
 
         new_gate_pos.z = 2.5f;
-        gates.emplace_back(new_gate_pos, Color{255, 0, 0, 60});
+        gates.emplace_back(new_gate_pos, Color{255, 0, 0, 60}, GateType::SUBTRACT, 420);
     }
-
-    std::cout << gates.size() << std::endl;
 }
 
 void World::render()
