@@ -10,6 +10,10 @@ public:
     void update(Vector3 pos);
     void render();
 
+    const std::vector<Projectile> &get_projectiles() const;
+    std::vector<Projectile> &get_projectiles();
+    std::vector<Projectile>::iterator erase_projectile(std::vector<Projectile>::iterator it);
+
 private:
     std::vector<Projectile> projectiles;
     float projectile_interval; // seconds

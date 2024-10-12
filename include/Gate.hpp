@@ -26,6 +26,7 @@ public:
     const Color get_type_color() const;
     const GateType get_random_type() const;
     const int get_random_value() const;
+    void increment_value(int by = 1);
 
 private:
     Vector3 pos;

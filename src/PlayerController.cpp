@@ -115,3 +115,13 @@ void PlayerController::update_stats(GateType gate_type, int gate_value)
         this->stats = 1;
     }
 }
+
+const WeaponController &PlayerController::get_weapon_controller() const
+{
+    return this->weapon_controller;
+}
+
+WeaponController &PlayerController::get_weapon_controller()
+{
+    return this->weapon_controller;
+}

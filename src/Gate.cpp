@@ -114,6 +114,11 @@ const int Gate::get_random_value() const
     return distrib(gen);
 }
 
+void Gate::increment_value(int by)
+{
+    this->value += by;
+}
+
 const GateType Gate::get_random_type() const
 {
     std::vector<GateType> types = {GateType::ADD, GateType::SUBTRACT, GateType::MULTIPLY, GateType::DIVIDE};

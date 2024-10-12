@@ -16,6 +16,8 @@ public:
     const int get_stats() const;
     void set_stats(int new_value);
     void update_stats(GateType gate_type, int gate_value);
+    const WeaponController &get_weapon_controller() const;
+    WeaponController &get_weapon_controller();
 
 private:
     Camera camera;

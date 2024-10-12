@@ -35,3 +35,18 @@ void WeaponController::render()
         projectile.render();
     }
 }
+
+const std::vector<Projectile> &WeaponController::get_projectiles() const
+{
+    return this->projectiles;
+}
+
+std::vector<Projectile> &WeaponController::get_projectiles()
+{
+    return this->projectiles;
+}
+
+std::vector<Projectile>::iterator WeaponController::erase_projectile(std::vector<Projectile>::iterator it)
+{
+    return this->projectiles.erase(it);
+}
