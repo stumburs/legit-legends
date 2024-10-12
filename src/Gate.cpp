@@ -1,6 +1,7 @@
 #include "Gate.hpp"
 #include "Text3D.hpp"
 #include "rlgl.h"
+#include <random>
 
 Gate::Gate(Vector3 pos, Color color, GateType type, int value)
 {
@@ -12,6 +13,13 @@ Gate::Gate(Vector3 pos, Color color, GateType type, int value)
     this->size = {0.1f, 4.0f, 5.0f};
     this->bb.min = {this->pos.x - this->size.x / 2, this->pos.y - this->size.y / 2, this->pos.z - this->size.z / 2};
     this->bb.max = {this->pos.x + this->size.x / 2, this->pos.y + this->size.y / 2, this->pos.z + this->size.z / 2};
+}
+
+void Gate::randomize()
+{
+    this->type = this->get_random_type();
+    this->value = this->get_random_value();
+    this->color = this->get_type_color();
 }
 
 void Gate::update()
@@ -74,4 +82,43 @@ const GateType Gate::get_type() const
 const int Gate::get_value() const
 {
     return this->value;
+}
+
+const Color Gate::get_type_color() const
+{
+    switch (this->type)
+    {
+    case GateType::ADD:
+        return {0, 255, 0, 60};
+        break;
+    case GateType::SUBTRACT:
+        return {255, 0, 0, 60};
+        break;
+    case GateType::MULTIPLY:
+        return {180, 160, 20, 60};
+        break;
+    case GateType::DIVIDE:
+        return {30, 30, 0, 60};
+        break;
+
+    default:
+        return LIME;
+    }
+}
+
+const int Gate::get_random_value() const
+{
+    std::random_device rd;  // a seed source for the random number engine
+    std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<> distrib(1, 6);
+    return distrib(gen);
+}
+
+const GateType Gate::get_random_type() const
+{
+    std::vector<GateType> types = {GateType::ADD, GateType::SUBTRACT, GateType::MULTIPLY, GateType::DIVIDE};
+    std::random_device rd;  // a seed source for the random number engine
+    std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<> distrib(0, types.size() - 1);
+    return types[distrib(gen)];
 }

@@ -16,10 +16,14 @@ void World::update()
         Vector3 gate_pos = player_controller.get_position();
         gate_pos.x += gate_interval;
         gate_pos.z = -2.5f;
-        gates.emplace_back(gate_pos, Color{0, 255, 0, 60}, GateType::ADD, 69);
+        Gate gate(gate_pos, GREEN, GateType::ADD, 1);
+        gate.randomize();
+        gates.push_back(gate);
 
         gate_pos.z = 2.5f;
-        gates.emplace_back(gate_pos, Color{255, 0, 0, 60}, GateType::SUBTRACT, 420);
+        gate = Gate(gate_pos, GREEN, GateType::ADD, 1);
+        gate.randomize();
+        gates.push_back(gate);
     }
 
     // Update gates
@@ -43,11 +47,18 @@ void World::update()
     {
         Vector3 new_gate_pos = gates.back().get_pos();
         new_gate_pos.x += gate_interval;
+
         new_gate_pos.z = -2.5f;
-        gates.emplace_back(new_gate_pos, Color{0, 255, 0, 60}, GateType::ADD, 69);
+
+        Gate gate(new_gate_pos, GREEN, GateType::ADD, 1);
+        gate.randomize();
+        gates.push_back(gate);
 
         new_gate_pos.z = 2.5f;
-        gates.emplace_back(new_gate_pos, Color{255, 0, 0, 60}, GateType::SUBTRACT, 420);
+
+        gate = Gate(new_gate_pos, GREEN, GateType::ADD, 1);
+        gate.randomize();
+        gates.push_back(gate);
     }
 }
 
