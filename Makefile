@@ -31,7 +31,7 @@ endif
 
 # Add additional linking flags for Linux
 ifeq ($(DETECTED_OS), Linux)
-	LDFLAGS += -L./lib/linux_x64 -lwinmm -lgdi32
+	LDFLAGS += -L./lib/linux_x64
 endif
 
 # Default rule
