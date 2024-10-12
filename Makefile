@@ -3,7 +3,7 @@ CXX := g++
 CXXFLAGS := -std=c++20 -g -Wall -I./include -O3
 
 # Linker flags
-LDFLAGS := -L./lib -lraylib
+LDFLAGS := -lraylib
 
 # Directories
 SRC_DIR := src
@@ -26,7 +26,12 @@ endif
 
 # Add additional linking flags for Windows
 ifeq ($(DETECTED_OS), Windows)
-	LDFLAGS += -lwinmm -lgdi32
+	LDFLAGS += -L./lib/windows_x64 -lwinmm -lgdi32
+endif
+
+# Add additional linking flags for Linux
+ifeq ($(DETECTED_OS), Linux)
+	LDFLAGS += -L./lib/linux_x64 -lwinmm -lgdi32
 endif
 
 # Default rule
@@ -48,7 +53,7 @@ PHONY: clean run
 # Delete executable
 clean:
 ifeq ($(DETECTED_OS), Windows)
-	del $(OBJ_DIR) $(BIN_DIR)
+	rmdir /s /q $(OBJ_DIR) $(BIN_DIR)
 endif
 ifeq ($(DETECTED_OS), Linux)
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
