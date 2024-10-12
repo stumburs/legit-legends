@@ -7,7 +7,7 @@ class WeaponController
 {
 public:
     WeaponController(float projectile_interval);
-    void update(Vector3 player_pos);
+    void update(Vector3 pos);
     void render();
 
 private:

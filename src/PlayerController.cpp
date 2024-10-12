@@ -14,9 +14,14 @@ PlayerController::PlayerController() : weapon_controller(WeaponController(1.0f))
     this->distance_to_camera = 4.0f;
 
     // Player
-    this->player_pos = {4.0f, 1.0f, 0.0f};
+    this->pos = {4.0f, 1.0f, 0.0f};
     this->texture = LoadTexture("./assets/knight.png");
     this->speed = 5.0f;
+
+    this->size = {0.1f, 2.0f, 1.0f};
+
+    this->bb.min = {this->pos.x - this->size.x / 2, this->pos.y - this->size.y / 2, this->pos.z - this->size.z / 2};
+    this->bb.max = {this->pos.x + this->size.x / 2, this->pos.y + this->size.y / 2, this->pos.z + this->size.z / 2};
 }
 
 const Camera &PlayerController::get_camera() const
@@ -26,7 +31,7 @@ const Camera &PlayerController::get_camera() const
 
 const Vector3 PlayerController::get_position() const
 {
-    return this->player_pos;
+    return this->pos;
 }
 
 void PlayerController::render()
@@ -34,8 +39,8 @@ void PlayerController::render()
     // Render bullets
     weapon_controller.render();
 
-    DrawBillboard(this->camera, this->texture, player_pos, 2.0f, WHITE);
-    DrawCubeWires(player_pos, 0.0f, 2.0f, 1.0f, RED);
+    DrawBillboard(this->camera, this->texture, pos, 2.0f, WHITE);
+    DrawBoundingBox(this->bb, BLUE);
 }
 
 void PlayerController::update()
@@ -43,20 +48,31 @@ void PlayerController::update()
     // Player pos: side-side
     float mouse_offset = (GetMousePosition().x / GetScreenWidth()) * 2.0f - 1.0f;
 
-    player_pos.z = mouse_offset * 7.0f;
+    pos.z = mouse_offset * 7.0f;
 
-    if (player_pos.z < -4.0f)
-        player_pos.z = -4.0f;
-    if (player_pos.z > 4.0f)
-        player_pos.z = 4.0f;
+    if (pos.z < -4.0f)
+        pos.z = -4.0f;
+    if (pos.z > 4.0f)
+        pos.z = 4.0f;
 
     // Player pos: forwards
-    player_pos.x += speed * GetFrameTime();
+    pos.x += speed * GetFrameTime();
+
+    // Update bounding box position
+    this->bb.min.x += speed * GetFrameTime();
+    this->bb.max.x += speed * GetFrameTime();
+    this->bb.min.z = this->pos.z - this->size.z / 2;
+    this->bb.max.z = this->pos.z + this->size.z / 2;
 
     // Set camera relative to player
-    camera.position.x = player_pos.x - distance_to_camera;
+    camera.position.x = pos.x - distance_to_camera;
     camera.target.x = camera.position.x + 10.0f;
 
     // Fire shots
-    weapon_controller.update(player_pos);
+    weapon_controller.update(pos);
+}
+
+const BoundingBox &PlayerController::get_bounding_box() const
+{
+    return this->bb;
 }

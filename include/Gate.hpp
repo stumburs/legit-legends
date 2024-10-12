@@ -18,10 +18,13 @@ public:
     void render();
     const Vector3 get_pos() const;
     const std::string get_formatted_value() const;
+    const BoundingBox &get_bounding_box() const;
 
 private:
     Vector3 pos;
     Color color;
     GateType type;
     int value;
+    BoundingBox bb;
+    Vector3 size;
 };
