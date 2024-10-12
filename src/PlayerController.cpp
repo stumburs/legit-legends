@@ -22,6 +22,8 @@ PlayerController::PlayerController() : weapon_controller(WeaponController(1.0f))
 
     this->bb.min = {this->pos.x - this->size.x / 2, this->pos.y - this->size.y / 2, this->pos.z - this->size.z / 2};
     this->bb.max = {this->pos.x + this->size.x / 2, this->pos.y + this->size.y / 2, this->pos.z + this->size.z / 2};
+
+    this->stats = 1;
 }
 
 const Camera &PlayerController::get_camera() const
@@ -75,4 +77,41 @@ void PlayerController::update()
 const BoundingBox &PlayerController::get_bounding_box() const
 {
     return this->bb;
+}
+
+const int PlayerController::get_stats() const
+{
+    return this->stats;
+}
+
+void PlayerController::set_stats(int new_value)
+{
+    this->stats = new_value;
+}
+
+void PlayerController::update_stats(GateType gate_type, int gate_value)
+{
+    switch (gate_type)
+    {
+    case GateType::ADD:
+        this->stats += gate_value;
+        break;
+    case GateType::SUBTRACT:
+        this->stats -= gate_value;
+        break;
+    case GateType::MULTIPLY:
+        this->stats *= gate_value;
+        break;
+    case GateType::DIVIDE:
+        this->stats /= std::ceil(gate_value);
+        break;
+
+    default:
+        return;
+    }
+
+    if (this->stats < 1)
+    {
+        this->stats = 1;
+    }
 }

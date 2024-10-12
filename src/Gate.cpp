@@ -65,3 +65,13 @@ const BoundingBox &Gate::get_bounding_box() const
 {
     return this->bb;
 }
+
+const GateType Gate::get_type() const
+{
+    return this->type;
+}
+
+const int Gate::get_value() const
+{
+    return this->value;
+}

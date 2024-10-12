@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <vector>
 #include "WeaponController.hpp"
+#include "Gate.hpp"
 
 class PlayerController
 {
@@ -12,6 +13,9 @@ public:
     void render();
     void update();
     const BoundingBox &get_bounding_box() const;
+    const int get_stats() const;
+    void set_stats(int new_value);
+    void update_stats(GateType gate_type, int gate_value);
 
 private:
     Camera camera;
@@ -19,6 +23,8 @@ private:
     Texture2D texture;
     float speed;
     float distance_to_camera;
+
+    int stats;
 
     Vector3 size;
     BoundingBox bb;

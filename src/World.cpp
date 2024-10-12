@@ -3,7 +3,7 @@
 
 World::World()
 {
-    this->gate_interval = 0.1f;
+    this->gate_interval = 20.0f;
 }
 
 void World::update()
@@ -30,6 +30,7 @@ void World::update()
         // Remove gates behind player
         if (CheckCollisionBoxes(it->get_bounding_box(), player_controller.get_bounding_box())) // TODO: Make sure player can only pick up one gate at a time
         {
+            player_controller.update_stats(it->get_type(), it->get_value());
             it = gates.erase(it);
         }
         else

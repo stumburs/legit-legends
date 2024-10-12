@@ -19,6 +19,8 @@ public:
     const Vector3 get_pos() const;
     const std::string get_formatted_value() const;
     const BoundingBox &get_bounding_box() const;
+    const GateType get_type() const;
+    const int get_value() const;
 
 private:
     Vector3 pos;

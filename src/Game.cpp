@@ -27,6 +27,7 @@ void Game::run()
                 world.render();
             }
             EndMode3D();
+            DrawText(TextFormat("%d", world.get_player().get_stats()), 20, 40, 100, LIME);
             DrawFPS(20, 20);
         }
         EndDrawing();
