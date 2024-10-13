@@ -1,5 +1,4 @@
 #include "World.hpp"
-#include <iostream>
 
 World::World()
 {
@@ -13,7 +12,7 @@ void World::update()
     // Initialize first gates
     if (gates.empty())
     {
-        Vector3 gate_pos = player_controller.get_position();
+        Vector3 gate_pos = player_controller.get_furthest_person().get_position();
         gate_pos.x += gate_interval;
         gate_pos.z = -2.5f;
         Gate gate(gate_pos, GREEN, GateType::ADD, 1);
@@ -47,18 +46,27 @@ void World::update()
         // }
 
         // Remove gates behind player
-        if (CheckCollisionBoxes(it->get_bounding_box(), player_controller.get_bounding_box())) // TODO: Make sure player can only pick up one gate at a time
+        if (it->get_pos().x < player_controller.get_camera().position.x)
         {
-            player_controller.update_stats(it->get_type(), it->get_value());
             it = gates.erase(it);
         }
-        else
+
+        // Remove collected gates
+        for (const auto &person : player_controller.get_people())
         {
-            ++it;
+            if (CheckCollisionBoxes(it->get_bounding_box(), person.get_bounding_box())) // TODO: Make sure player can only pick up one gate at a time
+            {
+                player_controller.update_stats(it->get_type(), it->get_value());
+                it = gates.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
         }
     }
 
-    while (gates.back().get_pos().x - player_controller.get_position().x < 100)
+    while (gates.back().get_pos().x - player_controller.get_camera().position.x < 100)
     {
         Vector3 new_gate_pos = gates.back().get_pos();
         new_gate_pos.x += gate_interval;
@@ -81,7 +89,7 @@ void World::render()
 {
     const float chunk_length = 100.0f;
 
-    int current_chunk_index = static_cast<int>(player_controller.get_position().x / chunk_length);
+    int current_chunk_index = static_cast<int>(player_controller.get_furthest_person().get_position().x / chunk_length);
 
     for (int i = 0; i < 3; i++) // Render 3 'chunks' of ground in front
     {

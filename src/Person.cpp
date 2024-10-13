@@ -22,9 +22,10 @@ void Person::update()
     this->bb.max.z = this->pos.z + this->size.z / 2;
 }
 
-void Person::render()
+void Person::render(const Camera3D &camera)
 {
-    DrawCubeV(this->pos, this->size, RED);
+    DrawBillboard(camera, this->texture, this->pos, 2.0f, WHITE);
+    DrawBoundingBox(this->bb, BLUE);
 }
 
 const Vector3 Person::get_position() const

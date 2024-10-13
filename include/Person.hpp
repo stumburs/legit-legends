@@ -6,7 +6,7 @@ class Person
 public:
     Person(Vector3 pos, Vector3 size, float speed, const char *texture_path);
     void update();
-    void render();
+    void render(const Camera3D &camera);
     const Vector3 get_position() const;
     const Texture2D &get_texture() const;
     const BoundingBox &get_bounding_box() const;
