@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -std=c++20 -g -Wall -I./include -O3
+CXXFLAGS := -std=c++20 -g -Wall -I./include -O3 -MMD
 
 # Linker flags
 LDFLAGS := -lraylib
@@ -13,6 +13,7 @@ BIN_DIR := bin
 # Source and object files
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+DEPS := $(OBJS:.o=.d)
 
 # Target executable
 TARGET := $(BIN_DIR)/legit-legends
@@ -44,6 +45,8 @@ $(TARGET): $(OBJS) | $(BIN_DIR)
 # Compile source files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+-include $(DEPS)
 
 $(BIN_DIR) $(OBJ_DIR):
 	mkdir $@
