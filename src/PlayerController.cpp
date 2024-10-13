@@ -2,7 +2,7 @@
 #include "raymath.h"
 #include <iostream>
 
-PlayerController::PlayerController() : weapon_controller(WeaponController(1.0f))
+PlayerController::PlayerController() : weapon_controller(WeaponController(1.0f)), person(Person(Vector3{4.0f, 1.0f, 0.0f}, Vector3{0.1f, 2.0f, 1.0f}, 5.0f, "./assets/knight.png"))
 {
     // Camera
     this->camera.fovy = 90.0f;
@@ -12,16 +12,6 @@ PlayerController::PlayerController() : weapon_controller(WeaponController(1.0f))
     this->camera.up = {0.0f, 1.0f, 0.0f};
 
     this->distance_to_camera = 4.0f;
-
-    // Player
-    this->pos = {4.0f, 1.0f, 0.0f};
-    this->texture = LoadTexture("./assets/knight.png");
-    this->speed = 5.0f;
-
-    this->size = {0.1f, 2.0f, 1.0f};
-
-    this->bb.min = {this->pos.x - this->size.x / 2, this->pos.y - this->size.y / 2, this->pos.z - this->size.z / 2};
-    this->bb.max = {this->pos.x + this->size.x / 2, this->pos.y + this->size.y / 2, this->pos.z + this->size.z / 2};
 
     this->stats = 1;
 }
@@ -33,7 +23,7 @@ const Camera &PlayerController::get_camera() const
 
 const Vector3 PlayerController::get_position() const
 {
-    return this->pos;
+    return this->person.get_position();
 }
 
 void PlayerController::render()
@@ -41,8 +31,8 @@ void PlayerController::render()
     // Render bullets
     weapon_controller.render();
 
-    DrawBillboard(this->camera, this->texture, pos, 2.0f, WHITE);
-    DrawBoundingBox(this->bb, BLUE);
+    DrawBillboard(this->camera, this->person.get_texture(), this->person.get_position(), 2.0f, WHITE);
+    DrawBoundingBox(this->person.get_bounding_box(), BLUE);
 }
 
 void PlayerController::update()
@@ -50,33 +40,27 @@ void PlayerController::update()
     // Player pos: side-side
     float mouse_offset = (GetMousePosition().x / GetScreenWidth()) * 2.0f - 1.0f;
 
-    pos.z = mouse_offset * 7.0f;
+    person.set_pos({person.get_position().x, person.get_position().y, mouse_offset * 7.0f});
 
-    if (pos.z < -4.0f)
-        pos.z = -4.0f;
-    if (pos.z > 4.0f)
-        pos.z = 4.0f;
+    if (person.get_position().z < -4.0f)
+        person.set_pos_z(-4.0f);
+    if (person.get_position().z > 4.0f)
+        person.set_pos_z(4.0f);
 
     // Player pos: forwards
-    pos.x += speed * GetFrameTime();
-
-    // Update bounding box position
-    this->bb.min.x += speed * GetFrameTime();
-    this->bb.max.x += speed * GetFrameTime();
-    this->bb.min.z = this->pos.z - this->size.z / 2;
-    this->bb.max.z = this->pos.z + this->size.z / 2;
+    person.update();
 
     // Set camera relative to player
-    camera.position.x = pos.x - distance_to_camera;
+    camera.position.x = person.get_position().x - distance_to_camera;
     camera.target.x = camera.position.x + 10.0f;
 
     // Fire shots
-    weapon_controller.update(pos);
+    weapon_controller.update(person.get_position());
 }
 
 const BoundingBox &PlayerController::get_bounding_box() const
 {
-    return this->bb;
+    return this->person.get_bounding_box();
 }
 
 const int PlayerController::get_stats() const

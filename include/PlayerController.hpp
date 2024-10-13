@@ -3,6 +3,7 @@
 #include <vector>
 #include "WeaponController.hpp"
 #include "Gate.hpp"
+#include "Person.hpp"
 
 class PlayerController
 {
@@ -21,15 +22,12 @@ public:
 
 private:
     Camera camera;
-    Vector3 pos;
-    Texture2D texture;
     float speed;
     float distance_to_camera;
 
     int stats;
 
-    Vector3 size;
-    BoundingBox bb;
+    Person person;
 
     WeaponController weapon_controller;
 };
