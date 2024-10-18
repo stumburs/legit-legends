@@ -16,7 +16,16 @@ git clone https://github.com/stumburs/legit-legends.git
 make
 ```
 
-3. Run the game within `/bin`
+> [!NOTE]
+>
+> ### Requirements
+>
+> - g++: Make sure you have g++ installed on your system. You can check if it's installed by running g++ --version in your terminal.
+> - C++ Standard Library: The game depends on the standard C++ library, which should be bundled with g++ on most platforms.
+> - C++20: The code (possibly) requires features from the C++20 standard (I just use it to avoid hassles). Make sure that your compiler supports it.
+> - Make: You need make installed to use the provided Makefile. You can verify this by running make --version.
+
+1. Run the game within `/bin`
 
 ## Contributing
 
