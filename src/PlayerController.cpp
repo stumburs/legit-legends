@@ -13,17 +13,9 @@ PlayerController::PlayerController() : weapon_controller(WeaponController(1.0f))
 
     this->distance_to_camera = 4.0f;
 
-    // Player
-    this->pos = {4.0f, 1.0f, 0.0f};
-    this->texture = LoadTexture("./assets/knight.png");
-    this->speed = 5.0f;
-
-    this->size = {0.1f, 2.0f, 1.0f};
-
-    this->bb.min = {this->pos.x - this->size.x / 2, this->pos.y - this->size.y / 2, this->pos.z - this->size.z / 2};
-    this->bb.max = {this->pos.x + this->size.x / 2, this->pos.y + this->size.y / 2, this->pos.z + this->size.z / 2};
-
     this->stats = 1;
+
+    people.emplace_back(Vector3{4.0f, 1.0f, 0.0f}, Vector3{0.1f, 2.0f, 1.0f}, 5.0f, "./assets/knight.png");
 }
 
 const Camera &PlayerController::get_camera() const
@@ -31,18 +23,15 @@ const Camera &PlayerController::get_camera() const
     return this->camera;
 }
 
-const Vector3 PlayerController::get_position() const
-{
-    return this->pos;
-}
-
 void PlayerController::render()
 {
     // Render bullets
     weapon_controller.render();
 
-    DrawBillboard(this->camera, this->texture, pos, 2.0f, WHITE);
-    DrawBoundingBox(this->bb, BLUE);
+    for (auto &person : people)
+    {
+        person.render(this->camera);
+    }
 }
 
 void PlayerController::update()
@@ -50,33 +39,32 @@ void PlayerController::update()
     // Player pos: side-side
     float mouse_offset = (GetMousePosition().x / GetScreenWidth()) * 2.0f - 1.0f;
 
-    pos.z = mouse_offset * 7.0f;
+    // Update people
+    for (auto &person : people)
+    {
+        person.set_pos({person.get_position().x, person.get_position().y, mouse_offset * 7.0f});
 
-    if (pos.z < -4.0f)
-        pos.z = -4.0f;
-    if (pos.z > 4.0f)
-        pos.z = 4.0f;
+        if (person.get_position().z < -4.0f)
+            person.set_pos_z(-4.0f);
+        if (person.get_position().z > 4.0f)
+            person.set_pos_z(4.0f);
+
+        person.update();
+    }
 
     // Player pos: forwards
-    pos.x += speed * GetFrameTime();
-
-    // Update bounding box position
-    this->bb.min.x += speed * GetFrameTime();
-    this->bb.max.x += speed * GetFrameTime();
-    this->bb.min.z = this->pos.z - this->size.z / 2;
-    this->bb.max.z = this->pos.z + this->size.z / 2;
 
     // Set camera relative to player
-    camera.position.x = pos.x - distance_to_camera;
+    camera.position.x = people.front().get_position().x - distance_to_camera;
     camera.target.x = camera.position.x + 10.0f;
 
     // Fire shots
-    weapon_controller.update(pos);
+    weapon_controller.update(people.front().get_position());
 }
 
-const BoundingBox &PlayerController::get_bounding_box() const
+const std::vector<Person> &PlayerController::get_people() const
 {
-    return this->bb;
+    return this->people;
 }
 
 const int PlayerController::get_stats() const
@@ -124,4 +112,19 @@ const WeaponController &PlayerController::get_weapon_controller() const
 WeaponController &PlayerController::get_weapon_controller()
 {
     return this->weapon_controller;
+}
+
+const Person PlayerController::get_furthest_person() const
+{
+    auto furthest_person = people.front();
+
+    for (const auto &person : people)
+    {
+        if (person.get_position().x > furthest_person.get_position().x)
+        {
+            furthest_person = person;
+        }
+    }
+
+    return furthest_person;
 }
