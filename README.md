@@ -25,7 +25,7 @@ make
 > - C++20: The code (possibly) requires features from the C++20 standard (I just use it to avoid hassles). Make sure that your compiler supports it.
 > - Make: You need make installed to use the provided Makefile. You can verify this by running make --version.
 
-1. Run the game within `/bin`
+3. Run the game within `/bin`
 
 ## Contributing
 
