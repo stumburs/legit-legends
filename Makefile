@@ -16,7 +16,8 @@ OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS := $(OBJS:.o=.d)
 
 # Target executable
-TARGET := $(BIN_DIR)/legit-legends
+EXECUTABLE_NAME := legit-legends
+TARGET := $(BIN_DIR)/$(EXECUTABLE_NAME)
 
 # Detect OS
 ifeq ($(OS), Windows_NT)
@@ -64,4 +65,9 @@ endif
 
 # Build and run executable
 run: $(TARGET)
-	./$(TARGET)
+#	cp -r assets/ bin/assets/   Copies assets into the bin directory. Might not be ideal. 
+ifeq ($(DETECTED_OS), Windows)
+	cd bin && $(EXECUTABLE_NAME)
+else ifeq ($(DETECTED_OS), Linux)
+	cd bin && ./$(EXECUTABLE_NAME)
+endif

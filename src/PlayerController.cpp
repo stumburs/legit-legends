@@ -15,7 +15,7 @@ PlayerController::PlayerController() : weapon_controller(WeaponController(1.0f))
 
     this->stats = 1;
 
-    people.emplace_back(Vector3{4.0f, 1.0f, 0.0f}, Vector3{0.1f, 2.0f, 1.0f}, 5.0f, "./assets/knight.png");
+    people.emplace_back(Vector3{4.0f, 1.0f, 0.0f}, Vector3{0.1f, 2.0f, 1.0f}, 5.0f, "../assets/knight.png");
 }
 
 const Camera &PlayerController::get_camera() const
